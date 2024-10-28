@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleLogout } from "@/pages/auth/common/store";
 
 import UserAvatar from "@/assets/images/all-img/user.png";
+import { logoutUser } from "../../../../Services/authService";
 
 const profileLabel = () => {
   return (
@@ -91,7 +92,8 @@ const Profile = () => {
       label: "Logout",
       icon: "heroicons-outline:login",
       action: () => {
-        dispatch(handleLogout(false));
+        logoutUser();
+        navigate("/");
       },
     },
   ];

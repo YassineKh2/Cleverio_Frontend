@@ -1,8 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./NavbarFront.css"; // Import the CSS file for styling
+import { logoutUser } from "../Services/authService";
 
 function NavbarFront() {
+    const navigate = useNavigate();
+    const handleLogOut = () => {
+        logoutUser();
+        navigate("/")
+
+    }
     return (
         <nav className="navbar">
             <ul className="navbar-list">
@@ -16,7 +23,7 @@ function NavbarFront() {
                     <Link to="/front/courses" className="navbar-link">Courses</Link>
                 </li>
             </ul>
-            <Link to="/logout" className="logout-button">Logout</Link>
+            <button onClick={handleLogOut} className="logout-button">Logout</button>
         </nav>
     );
 }

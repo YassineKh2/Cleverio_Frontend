@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Checkbox from "@/components/ui/Checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { handleRegister } from "./store";
+import { registerUser } from "../../../Services/authService";
 
 const schema = yup
   .object({
@@ -27,7 +28,6 @@ const schema = yup
 
 const RegForm = () => {
   const dispatch = useDispatch();
-
   const [checked, setChecked] = useState(false);
   const {
     register,
@@ -40,11 +40,13 @@ const RegForm = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    dispatch(handleRegister(data));
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
+  const onSubmit = async (data) => {
+    try {
+      const response = await registerUser(data.name, data.password, data.email);
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response?.data?.error || "register failed");
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "./common/login-form";
+import RegisterForm from "./common/reg-from";
 import Social from "./common/social";
 import useDarkMode from "@/hooks/useDarkMode";
 import { ToastContainer } from "react-toastify";
@@ -10,8 +11,10 @@ import LogoWhite from "@/assets/images/logo/logo-white.svg";
 import Logo from "@/assets/images/logo/logo.svg";
 import Illustration from "@/assets/images/auth/ils1.svg";
 
-const login = () => {
+const Login = () => {
     const [isDark] = useDarkMode();
+    const [showRegister, setShowRegister] = useState(false);
+
     return (
         <>
             <ToastContainer />
@@ -20,19 +23,19 @@ const login = () => {
                     <div className="left-column relative z-[1]">
                         <div className="max-w-[520px] pt-20 ltr:pl-20 rtl:pr-20">
                             <Link to="/">
-                                <img src={isDark ? LogoWhite : Logo} alt="" className="mb-10" />
+                                <img src={isDark ? LogoWhite : Logo} alt="Logo" className="mb-10" />
                             </Link>
                             <h4>
                                 Unlock your Project
                                 <span className="text-slate-800 dark:text-slate-400 font-bold">
-                  performance
-                </span>
+                                    performance
+                                </span>
                             </h4>
                         </div>
                         <div className="absolute left-0 2xl:bottom-[-160px] bottom-[-130px] h-full w-full z-[-1]">
                             <img
                                 src={Illustration}
-                                alt=""
+                                alt="Illustration"
                                 className="h-full w-full object-contain"
                             />
                         </div>
@@ -44,7 +47,7 @@ const login = () => {
                                     <Link to="/">
                                         <img
                                             src={isDark ? LogoWhite : Logo}
-                                            alt=""
+                                            alt="Logo"
                                             className="mx-auto"
                                         />
                                     </Link>
@@ -55,7 +58,11 @@ const login = () => {
                                         Sign in to your account to start using Dashcode
                                     </div>
                                 </div>
-                                <LoginForm />
+                                {!showRegister ? (
+                                    <LoginForm />
+                                ):(
+                                    <RegisterForm />
+                                )}
                                 <div className="relative border-b-[#9AA2AF] border-opacity-[16%] border-b pt-6">
                                     <div className="absolute inline-block bg-white dark:bg-slate-800 dark:text-slate-400 left-1/2 top-1/2 transform -translate-x-1/2 px-4 min-w-max text-sm text-slate-500 font-normal">
                                         Or continue with
@@ -66,12 +73,22 @@ const login = () => {
                                 </div>
                                 <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 mt-12 uppercase text-sm">
                                     Don’t have an account?{" "}
-                                    <Link
-                                        to="/register"
-                                        className="text-slate-900 dark:text-white font-medium hover:underline"
-                                    >
-                                        Sign up
-                                    </Link>
+                                    {!showRegister ? (
+                                    <a
+                                    onClick={() => setShowRegister(true)}
+                                    className="text-slate-900 dark:text-white font-medium hover:underline"
+                                >
+                                    Sign up
+                                </a>
+                                ):(
+                                    <a
+                                    onClick={() => setShowRegister(false)}
+                                    className="text-slate-900 dark:text-white font-medium hover:underline"
+                                >
+                                    Sign in
+                                </a>
+                                )}
+                                    
                                 </div>
                             </div>
                             <div className="auth-footer text-center">
@@ -85,4 +102,4 @@ const login = () => {
     );
 };
 
-export default login;
+export default Login;
