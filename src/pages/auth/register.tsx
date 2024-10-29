@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LoginForm from "./common/login-form";
+import RegForm from "./common/reg-from";
 import Social from "./common/social";
 import useDarkMode from "@/hooks/useDarkMode";
 import { ToastContainer } from "react-toastify";
@@ -10,7 +10,8 @@ import LogoWhite from "@/assets/images/logo/logo-white.svg";
 import Logo from "@/assets/images/logo/logo.png";
 import Illustration from "@/assets/images/auth/ils1.svg";
 
-const login = () => {
+
+const Register = () => {
     const [isDark] = useDarkMode();
     return (
         <>
@@ -45,19 +46,19 @@ const login = () => {
                                     </Link>
                                 </div>
                                 <div className="text-center 2xl:mb-10 mb-4">
-                                    <h4 className="font-medium">Se connecter</h4>
+                                    <h4 className="font-medium">S'inscrire</h4>
                                     <div className="text-slate-500 text-base">
-                                    Connectez-vous à votre compte                                    </div>
+                                    Créez votre compte                                    </div>
                                 </div>
-                                <LoginForm />
+                                <RegForm />
                                 
                                 <div className="md:max-w-[345px] mx-auto font-normal text-slate-500 dark:text-slate-400 mt-12 uppercase text-sm">
-                                Vous n'avez pas de compte?{" "}
+                                Vous avez déjà un compte?{" "}
                                     <Link
-                                        to="/register"
+                                        to="/"
                                         className="text-slate-900 dark:text-white font-medium hover:underline"
                                     >
-                                           Inscrivez-vous
+                                          Connectez-vous
                                     </Link>
                                 </div>
                             </div>
@@ -71,4 +72,4 @@ const login = () => {
     );
 };
 
-export default login;
+export default Register;
