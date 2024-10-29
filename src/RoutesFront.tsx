@@ -8,6 +8,7 @@ const Error = lazy(() => import("./pages/404"));
 const Home = lazy(() => import("./pages/front/Home/Home.tsx"));
 const Events = lazy(() => import("./pages/front/Events/Events.tsx"));
 const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
+const AddRoom = lazy(() => import("./pages/front/Rooms/AddRooms.jsx"));
 
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
@@ -64,6 +65,14 @@ function RoutesFront() {
                     element={
                         <Suspense fallback={<Loading />}>
                             <Error />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/addRoom"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <AddRoom />
                         </Suspense>
                     }
                 />
