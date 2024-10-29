@@ -6,39 +6,62 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@/components/ui/Checkbox";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { handleLogin } from "./store";
 import { toast } from "react-toastify";
-const schema = yup
-  .object({
-    email: yup.string().email("Invalid email").required("Email is Required"),
-    password: yup.string().required("Password is Required"),
-  })
-  .required();
+
+// Importer la fonction de connexion de votre service
+import { loginUser } from "../../../Services/userApi";
+
+// Schéma de validation
+const schema = yup.object({
+  username: yup.string().required("Le nom d'utilisateur est requis"),
+  password: yup.string().required("Le mot de passe est requis"),
+}).required();
+
+// Fonction d'assistance pour décoder JWT sans `jwt-decode`
+const parseJwt = (token) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};
+
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.auth);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
+  const navigate = useNavigate();
+
+  const { register, formState: { errors }, handleSubmit } = useForm({
     resolver: yupResolver(schema),
-    //
     mode: "all",
   });
-  const navigate = useNavigate();
-  const onSubmit = (data) => {
-    const user = users.find(
-      (user) => user.email === data.email && user.password === data.password
-    );
-    if (user) {
+
+  const onSubmit = async (data) => {
+    try {
+      // Appeler la fonction loginUser avec le nom d'utilisateur et le mot de passe
+      const token = await loginUser(data.username, data.password);
+
+      // Décoder le token pour accéder au rôle
+      const decoded = parseJwt(token);
+      const userRole = decoded?.role;
+
+      // Enregistrer le token dans Redux ou localStorage si nécessaire
       dispatch(handleLogin(true));
-      setTimeout(() => {
+      localStorage.setItem("token", token);
+
+      toast.success("Connexion réussie !", { autoClose: 1500 });
+
+      // Rediriger en fonction du rôle
+      if (userRole === "admin") {
         navigate("/dashboard");
-      }, 1500);
-    } else {
-      toast.error("Invalid credentials", {
+      } else if (userRole === "student") {
+        navigate("/front");
+      } else {
+        toast.error("Rôle inconnu", { autoClose: 1500 });
+      }
+    } catch (error) {
+      toast.error("Identifiants incorrects", {
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -54,20 +77,18 @@ const LoginForm = () => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Textinput
-        name="email"
-        label="email"
-        defaultValue={users[0].email}
-        type="email"
+        name="username"
+        label="Nom d'utilisateur"
+        type="text"
         register={register}
-        error={errors.email}
+        error={errors.username}
       />
       <Textinput
         name="password"
-        label="passwrod"
+        label="Mot de passe"
         type="password"
-        defaultValue={users[0].password}
         register={register}
         error={errors.password}
       />
@@ -75,17 +96,14 @@ const LoginForm = () => {
         <Checkbox
           value={checked}
           onChange={() => setChecked(!checked)}
-          label="Keep me signed in"
+          label="Rester connecté"
         />
-        <Link
-          to="/forgot-password"
-          className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium"
-        >
-          Forgot Password?{" "}
+        <Link to="/forgot-password" className="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium">
+          Mot de passe oublié ?
         </Link>
       </div>
 
-      <button className="btn btn-dark block w-full text-center">Sign in</button>
+      <button className="btn btn-dark block w-full text-center">Se connecter</button>
     </form>
   );
 };

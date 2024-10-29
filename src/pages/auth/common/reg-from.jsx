@@ -6,79 +6,124 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Checkbox from "@/components/ui/Checkbox";
-import { useDispatch, useSelector } from "react-redux";
-import { handleRegister } from "./store";
+import { registerUser } from "../../../Services/userApi";
 
-const schema = yup
-  .object({
-    name: yup.string().required("Name is Required"),
-    email: yup.string().email("Invalid email").required("Email is Required"),
-    password: yup
-      .string()
-      .min(6, "Password must be at least 8 characters")
-      .max(20, "Password shouldn't be more than 20 characters")
-      .required("Please enter password"),
-    // confirm password
-    confirmpassword: yup
-      .string()
-      .oneOf([yup.ref("password"), null], "Passwords must match"),
-  })
-  .required();
+const schema = yup.object({
+  username: yup.string().required("Nom d'utilisateur requis"),
+  password: yup
+    .string()
+    .min(8, "Le mot de passe doit comporter au moins 8 caractères")
+    .max(20, "Le mot de passe ne doit pas dépasser 20 caractères")
+    .required("Mot de passe requis"),
+  first_name: yup.string().required("Prénom requis"),
+  last_name: yup.string().required("Nom de famille requis"),
+  email: yup.string().email("Email invalide").required("Email requis"),
+  date_of_birth: yup
+    .date()
+    .required("Date de naissance requise")
+    .typeError("Format de date invalide (YYYY-MM-DD)"),
+}).required();
 
 const RegForm = () => {
-  const dispatch = useDispatch();
-
   const [checked, setChecked] = useState(false);
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
+  const navigate = useNavigate();
+
+  const { register, formState: { errors }, handleSubmit } = useForm({
     resolver: yupResolver(schema),
     mode: "all",
   });
 
-  const navigate = useNavigate();
+  const onSubmit = async (data) => {
+    if (!checked) {
+      toast.error("Veuillez accepter les Termes et Conditions.");
+      return;
+    }
 
-  const onSubmit = (data) => {
-    dispatch(handleRegister(data));
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
+    try {
+      const response = await registerUser({
+        username: data.username,
+        password: data.password,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        email: data.email,
+        date_of_birth: data.date_of_birth.toISOString().split("T")[0], // Send only date part
+        is_active: true,
+        points: 0,
+      });
+      
+      toast.success("Compte créé avec succès !", { autoClose: 1500 });
+      
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      toast.error(error.message || "Échec de l'inscription. Veuillez réessayer.");
+    }
   };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 ">
-      <Textinput
-        name="name"
-        label="name"
-        type="text"
-        placeholder=" Enter your name"
-        register={register}
-        error={errors.name}
-      />{" "}
-      <Textinput
-        name="email"
-        label="email"
-        type="email"
-        placeholder=" Enter your email"
-        register={register}
-        error={errors.email}
-      />
-      <Textinput
-        name="password"
-        label="passwrod"
-        type="password"
-        placeholder=" Enter your password"
-        register={register}
-        error={errors.password}
-      />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <div className="grid grid-cols-2 gap-4">
+        <Textinput
+          name="username"
+          label="Nom d'utilisateur"
+          type="text"
+          placeholder="Entrez votre nom d'utilisateur"
+          register={register}
+          error={errors.username}
+        />
+        <Textinput
+          name="password"
+          label="Mot de passe"
+          type="password"
+          placeholder="Entrez votre mot de passe"
+          register={register}
+          error={errors.password}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <Textinput
+          name="first_name"
+          label="Prénom"
+          type="text"
+          placeholder="Entrez votre prénom"
+          register={register}
+          error={errors.first_name}
+        />
+        <Textinput
+          name="last_name"
+          label="Nom de famille"
+          type="text"
+          placeholder="Entrez votre nom de famille"
+          register={register}
+          error={errors.last_name}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <Textinput
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="Entrez votre email"
+          register={register}
+          error={errors.email}
+        />
+        <Textinput
+          name="date_of_birth"
+          label="Date de naissance"
+          type="date" 
+          placeholder="YYYY-MM-DD"
+          register={register}
+          error={errors.date_of_birth}
+        />
+      </div>
       <Checkbox
-        label="You accept our Terms and Conditions and Privacy Policy"
+        label="Vous acceptez nos Termes et Conditions et notre Politique de Confidentialité"
         value={checked}
         onChange={() => setChecked(!checked)}
       />
       <button className="btn btn-dark block w-full text-center">
-        Create an account
+        Créer un compte
       </button>
     </form>
   );
