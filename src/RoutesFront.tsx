@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 
 const Login = lazy(() => import("./pages/auth/login.tsx"));
-
+const Register =lazy(()=>import("./pages/auth/register.tsx"));
 const Dashboard = lazy(() => import("./pages/dashboard"));
 const Error = lazy(() => import("./pages/404"));
 const Home = lazy(() => import("./pages/front/Home/Home.tsx"));
@@ -53,6 +53,15 @@ function RoutesFront() {
                     element={
                         <Suspense fallback={<Loading />}>
                             <Login />
+                        </Suspense>
+                    }
+                />
+
+<Route
+                    path="/register"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <Register />
                         </Suspense>
                     }
                 />
