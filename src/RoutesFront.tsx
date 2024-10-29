@@ -8,6 +8,7 @@ const Error = lazy(() => import("./pages/404"));
 const Home = lazy(() => import("./pages/front/Home/Home.tsx"));
 const Events = lazy(() => import("./pages/front/Events/Events.tsx"));
 const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
+const ArtGallery = lazy(() => import("./pages/front/ArtGallery/ArtGallery.jsx"));
 
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
@@ -47,6 +48,14 @@ function RoutesFront() {
                     }
                 />
                 {/* Other routes */}
+                <Route
+                    path="/front/art"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <ArtGallery />
+                        </Suspense>
+                    }
+                />
                 <Route
                     path="/"
                     element={
