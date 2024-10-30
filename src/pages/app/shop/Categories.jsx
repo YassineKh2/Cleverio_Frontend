@@ -58,19 +58,19 @@ const Categories = () => {
         <div className="flex  ">
             <div className="flex-1 flex flex-col overflow-hidden p-6 bg-gray-100 dark:bg-gray-900">
                 <ToastContainer />
-                <Card title="Game Categories" headerslot={
-                    <Button text="Add New Category" onClick={() => setIsAddModalOpen(true)} className="bg-black-600 text-white" />
+                <Card title="Catégories de jeux" headerslot={
+                    <Button text="Ajouter une nouvelle catégorie" onClick={() => setIsAddModalOpen(true)} className="bg-black-600 text-white" />
                 }>
                     {loading ? (
-                        <p>Loading categories...</p>
+                        <p>Chargement des catégories...</p>
                     ) : categories.length > 0 ? (
                         <table className="min-w-full bg-white dark:bg-slate-800 rounded-lg shadow-md">
                             <thead>
                                 <tr>
-                                    <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Name</th>
+                                    <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Nom</th>
                                     <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Description</th>
-                                    <th className="px-6 py-3 border-b-2 border-gray-300 text-center leading-4 text-slate-900 dark:text-white">Edit</th>
-                                    <th className="px-6 py-3 border-b-2 border-gray-300 text-center leading-4 text-slate-900 dark:text-white">Delete</th>
+                                    <th className="px-6 py-3 border-b-2 border-gray-300 text-center leading-4 text-slate-900 dark:text-white">modifier</th>
+                                    <th className="px-6 py-3 border-b-2 border-gray-300 text-center leading-4 text-slate-900 dark:text-white">Supprimer</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -80,14 +80,14 @@ const Categories = () => {
                                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{category.description}</td>
                                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
                                             <Button
-                                                text="Edit"
+                                                text="Modifier"
                                                 onClick={() => setSelectedCategory(category)}
                                                 className="bg-black-700 text-white px-2 py-1 mr-2"
                                             />
                                         </td>
                                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
                                             <Button
-                                                text="Delete"
+                                                text="Supprmier"
                                                 onClick={() => handleDelete(category.id)}
                                                 className="bg-black-800 text-white px-2 py-1"
                                             />
@@ -97,7 +97,7 @@ const Categories = () => {
                             </tbody>
                         </table>
                     ) : (
-                        <p>No categories available.</p>
+                        <p>Aucune catégorie disponible.</p>
                     )}
                 </Card>
 

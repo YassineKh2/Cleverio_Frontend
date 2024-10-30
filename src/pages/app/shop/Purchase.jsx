@@ -45,19 +45,19 @@ const Purchase = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-lg font-semibold mb-4">All Purchases</h2>
+            <h2 className="text-lg font-semibold mb-4">Tous les achats</h2>
             {loading ? (
-                <p>Loading...</p>
+                <p>Chargement...</p>
             ) : purchases.length > 0 ? (
                 <table className="min-w-full bg-white border border-gray-200">
                     <thead>
                         <tr className="bg-gray-100">
                            
-                            <th className="border px-4 py-2">Username</th>
+                            <th className="border px-4 py-2">Nom d'utilisateur</th>
                             <th className="border px-4 py-2">Email</th>
-                            <th className="border px-4 py-2">Game</th>
-                            <th className="border px-4 py-2">Points Used</th>
-                            <th className="border px-4 py-2">Purchase Date</th>
+                            <th className="border px-4 py-2">Jeu</th>
+                            <th className="border px-4 py-2">Points utilisés</th>
+                            <th className="border px-4 py-2">Date d'achat</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,7 +74,7 @@ const Purchase = () => {
                     </tbody>
                 </table>
             ) : (
-                <p>No purchases found.</p>
+                <p>Aucun achat trouvé.</p>
             )}
         </div>
     );

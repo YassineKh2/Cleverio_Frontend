@@ -80,7 +80,7 @@ const AddGame = ({ onClose, onAdd }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-                <h2 className="text-xl font-semibold mb-4">Add New Game</h2>
+                <h2 className="text-xl font-semibold mb-4">Ajouter un nouveau jeu</h2>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
@@ -109,7 +109,7 @@ const AddGame = ({ onClose, onAdd }) => {
                         required
                         className={`w-full p-2 border ${errors.category_name ? 'border-red-500' : 'border-gray-300'} rounded mb-2`}
                     >
-                        <option value="">Select Category</option>
+                        <option value="">Sélectionnez une catégorie</option>
                         {categories.map((category) => (
                             <option key={category.id} value={category.name}>
                                 {category.name}
@@ -145,10 +145,10 @@ const AddGame = ({ onClose, onAdd }) => {
 
                     <div className="flex justify-end space-x-2 mt-4">
                         <button type="button" onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded">
-                            Cancel
+                            Annuler
                         </button>
                         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-                            Add Game
+                        Ajouter un jeu
                         </button>
                     </div>
                 </form>

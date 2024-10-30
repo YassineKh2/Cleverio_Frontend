@@ -22,7 +22,7 @@ function Shop() {
               
             
                     <p className="text-gray-600 dark:text-gray-400 mb-6">
-                        Browse through various games available for purchase with points. Use the categories to filter by game type.
+                    Parcourez les différents jeux disponibles à l'achat avec des points. Utilisez les catégories pour filtrer par type de jeu.
                     </p>
                     {/* <UserPoints /> */}
                     <GameList selectedCategory={selectedCategory} />

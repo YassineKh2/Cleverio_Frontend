@@ -47,7 +47,7 @@ const AddCategory = ({ onClose, onSuccess }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg w-1/3">
-                <h2 className="text-xl font-semibold mb-4">Add New Category</h2>
+                <h2 className="text-xl font-semibold mb-4">Ajouter une nouvelle catégorie</h2>
                 <div className="space-y-4">
                     <div>
                         <input
