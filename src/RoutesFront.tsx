@@ -8,7 +8,9 @@ const Error = lazy(() => import("./pages/404"));
 const Home = lazy(() => import("./pages/front/Home/Home.tsx"));
 const Events = lazy(() => import("./pages/front/Events/Events.tsx"));
 const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
-
+const Shop = lazy(() => import("./pages/front/Shop/Shop"));
+import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
 import NavbarFront from "@/components/NavbarFront";
@@ -47,6 +49,15 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+                 <Route
+                    path="/front/shop"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <Shop />
+                        </Suspense>
+                    }
+                />
+                
                 {/* Other routes */}
                 <Route
                     path="/"
@@ -88,6 +99,7 @@ function RoutesFront() {
                     }
                 />
             </Routes>
+            <ToastContainer />
         </main>
     );
 }

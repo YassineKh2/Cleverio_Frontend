@@ -5,15 +5,16 @@ import Button from "@/components/ui/Button";
 import { ToastContainer, toast } from "react-toastify";
 import EditGameModal from "./EditGameModal";
 import Categories from "./Categories";
-
+import AddGame from "./AddGame";
+import Purchase from "./Purchase";
 const GameList = () => {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedGame, setSelectedGame] = useState(null);
     const BASE_URL = "http://127.0.0.1:8000";
     const defaultGameImage = `${BASE_URL}/media/games/default.png`;
+    const [showAddModal, setShowAddModal] = useState(false);
 
-    // Fetch games function
     const fetchGames = async () => {
         setLoading(true);
         try {
@@ -32,6 +33,10 @@ const GameList = () => {
     }, []);
 
     const handleDelete = async (gameId) => {
+        // Show a confirmation dialog before deleting
+        const confirmDelete = window.confirm("Are you sure you want to delete this game?");
+        if (!confirmDelete) return;
+
         try {
             await axios.delete(`${BASE_URL}/api/game/${gameId}`);
             setGames(games.filter((game) => game.id !== gameId));
@@ -55,7 +60,7 @@ const GameList = () => {
     return (
         <>
             <Categories />
-            <div className="flex h-screen">
+            <div className="flex ">
                 <div className="flex-1 flex flex-col overflow-hidden">
                     <div className="flex-1 p-6 bg-gray-100 dark:bg-gray-900 overflow-y-auto">
                         <ToastContainer />
@@ -65,7 +70,7 @@ const GameList = () => {
                             headerslot={
                                 <Button
                                     text="Add Game"
-                                    onClick={() => console.log("Add a new game")}
+                                    onClick={() => setShowAddModal(true)}
                                     className="bg-black-600 text-white"
                                 />
                             }
@@ -85,50 +90,52 @@ const GameList = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {games.map((game) => {
-                                            // Log the entire game object to inspect its properties
-                                            console.log("Game Data:", game);
-                                            return (
-                                                <tr key={game.id} className="text-slate-700 dark:text-slate-300">
-                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
-                                                        {/* Log the image URL */}
-                                                        {console.log("Image URL:", `${BASE_URL}${game.picture}`)}
-                                                        <img
-                                                            src={game.picture_url ? `${BASE_URL}/media/${game.picture_url}` : defaultGameImage}
-                                                            alt={game.name}
-                                                            className="w-10 h-10 rounded object-cover"
-                                                            onError={(e) => {
-                                                                e.target.onerror = null;
-                                                                e.target.src = defaultGameImage;
-                                                            }}
-                                                        />
-                                                    </td>
-                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.name}</td>
-                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.points}</td>
-                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.category_name}</td>
-                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.stock_quantity}</td>
-                                                    <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
-                                                        <Button
-                                                            text="Edit"
-                                                            onClick={() => handleEdit(game)}
-                                                            className="bg-black-500 text-white px-2 py-1 mr-2"
-                                                        />
-                                                        <Button
-                                                            text="Delete"
-                                                            onClick={() => handleDelete(game.id)}
-                                                            className="bg-black-500 text-white px-2 py-1"
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
+                                        {games.map((game) => (
+                                            <tr key={game.id} className="text-slate-700 dark:text-slate-300">
+                                                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">
+                                                    <img
+                                                        src={game.picture_url ? `${BASE_URL}/media/${game.picture_url}` : defaultGameImage}
+                                                        alt={game.name}
+                                                        className="w-10 h-10 rounded object-cover"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = defaultGameImage;
+                                                        }}
+                                                    />
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.name}</td>
+                                                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.points}</td>
+                                                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.category_name}</td>
+                                                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.stock_quantity}</td>
+                                                <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
+                                                    <Button
+                                                        text="Edit"
+                                                        onClick={() => handleEdit(game)}
+                                                        className="bg-black-500 text-white px-2 py-1 mr-2"
+                                                    />
+                                                    <Button
+                                                        text="Delete"
+                                                        onClick={() => handleDelete(game.id)}
+                                                        className="bg-black-900 text-white px-2 py-1"
+                                                    />
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             )}
                         </Card>
                     </div>
 
-                    {/* Edit Modal */}
+                    {/* Add Game Modal */}
+                    {showAddModal && (
+                        <AddGame
+                            onClose={() => setShowAddModal(false)}
+                            onAdd={fetchGames} // Refresh game list after adding
+                        />
+                    )}
+
+                    {/* Edit Game Modal */}
                     {selectedGame && (
                         <EditGameModal
                             game={selectedGame}
@@ -138,6 +145,7 @@ const GameList = () => {
                     )}
                 </div>
             </div>
+            <Purchase></Purchase>
         </>
     );
 };

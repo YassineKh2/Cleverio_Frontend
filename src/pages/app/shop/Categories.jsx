@@ -41,6 +41,9 @@ const Categories = () => {
     };
 
     const handleDelete = async (categoryId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this category?");
+        if (!confirmDelete) return; // Exit if the user cancels the confirmation
+
         try {
             await axios.delete(`http://127.0.0.1:8000/api/game-categories/${categoryId}`);
             setCategories(categories.filter(category => category.id !== categoryId));
@@ -75,18 +78,18 @@ const Categories = () => {
                                     <tr key={category.id} className="text-slate-700 dark:text-slate-300">
                                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{category.name}</td>
                                         <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{category.description}</td>
- 
-                                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center"> <Button
+                                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
+                                            <Button
                                                 text="Edit"
                                                 onClick={() => setSelectedCategory(category)}
-                                                className="bg-gray-700 text-white px-2 py-1 mr-2"
+                                                className="bg-black-700 text-white px-2 py-1 mr-2"
                                             />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
                                             <Button
                                                 text="Delete"
                                                 onClick={() => handleDelete(category.id)}
-                                                className="bg-gray-700 text-white px-2 py-1"
+                                                className="bg-black-800 text-white px-2 py-1"
                                             />
                                         </td>
                                     </tr>
