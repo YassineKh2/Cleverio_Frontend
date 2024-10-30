@@ -32,7 +32,7 @@ const CategoryList = ({ onSelectCategory }) => {
             {loading ? (
                 <p className="text-gray-600 dark:text-gray-300">Loading...</p>
             ) : (
-                <ul className="space-y-3">
+                <ul className="space-y-3 space-x-2">
                     <li
                         className="flex items-center cursor-pointer p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                         onClick={() => onSelectCategory("all")}

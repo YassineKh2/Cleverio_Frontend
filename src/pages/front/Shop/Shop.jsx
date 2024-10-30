@@ -31,7 +31,7 @@ function Shop() {
             </div>
 
             {/* Game List on the Right */}
-            <div className="w-3/4 p-6 overflow-y-auto">
+            <div className="w-3/4 p-4 overflow-y-auto">
                 <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                     <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">Shop</h1>
                     <p className="text-gray-600 dark:text-gray-400 mb-6">
