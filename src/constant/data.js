@@ -57,6 +57,12 @@ export const menuItems = [
     icon: "heroicons-outline:mail",
     link: "email",
   },
+  {
+    title: "Quiz",
+    isHide: true,
+    icon: "heroicons-outline:puzzle-piece",
+    link: "dashboard/quiz",
+  },
 
   {
     title: "Kanban",
