@@ -72,10 +72,10 @@ export const menuItems = [
   },
 
   {
-    title: "Todo",
+    title: "Shop",
     isHide: true,
     icon: "heroicons-outline:clipboard-check",
-    link: "todo",
+    link: "dashboard/shop",
   },
 
   {

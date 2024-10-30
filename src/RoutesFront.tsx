@@ -12,6 +12,7 @@ const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
 import NavbarFront from "@/components/NavbarFront";
+import GameList from "./pages/app/shop/GameList";
 
 function RoutesFront() {
     const location = useLocation();
@@ -64,10 +65,20 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+
                 <Route path="/*" element={<Layout />}>
                     <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="dashboard/shop" element={<GameList />} />
                     <Route path="*" element={<Navigate to="/404" />} />
                 </Route>
+                {/* <Route
+                    path="/shop"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <GameList />
+                        </Suspense>
+                    }
+                /> */}
                 <Route
                     path="/404"
                     element={

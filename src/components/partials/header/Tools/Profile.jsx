@@ -62,7 +62,11 @@ const Profile = () => {
     {
       label: "Todo",
       icon: "heroicons-outline:clipboard-check",
-      action: () => {
+/*************  ✨ Codeium Command ⭐  *************/
+      /**
+       * Navigate to the Shop page.
+       */
+/******  ac9667e3-a22c-42c1-a902-b327fcf40e58  *******/      action: () => {
         navigate("/todo");
       },
     },
