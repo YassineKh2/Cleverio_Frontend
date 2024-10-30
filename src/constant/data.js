@@ -70,12 +70,18 @@ export const menuItems = [
     icon: "heroicons-outline:calendar",
     link: "calender",
   },
-
   {
     title: "Shop",
     isHide: true,
     icon: "heroicons-outline:clipboard-check",
     link: "dashboard/shop",
+  },
+
+  {
+    title: "Todo",
+    isHide: true,
+    icon: "heroicons-outline:clipboard-check",
+    link: "todo",
   },
 
   {
