@@ -45,12 +45,12 @@ const UserPoints = ({ refreshTrigger }) => {
             {loading ? (
                 <div className="flex justify-center items-center text-xs">
                     <div className="loader ease-linear rounded-full border-2 border-t-2 border-gray-200 h-3 w-3 mb-1"></div>
-                    <p className="ml-2">Loading...</p>
+                    <p className="ml-2">Chargement...</p>
                 </div>
             ) : points !== null ? (
-                <p className="text-lg font-medium text-green-500">Balance: {points} Points</p>
+                <p className="text-lg font-medium text-green-500">Solde: {points} Points</p>
             ) : (
-                <p className="text-red-500 text-xs">Failed to load points.</p>
+                <p className="text-red-500 text-xs">Impossible de charger les points.</p>
             )}
         </div>
     );

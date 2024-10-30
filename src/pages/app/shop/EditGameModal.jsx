@@ -78,7 +78,7 @@ const EditGameModal = ({ game, onClose, onSave }) => {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg w-1/3">
-                <h2 className="text-xl font-semibold mb-4">Edit Game</h2>
+                <h2 className="text-xl font-semibold mb-4">Modifier le jeu</h2>
                 <div className="space-y-4">
                     <div>
                         <input
@@ -109,7 +109,7 @@ const EditGameModal = ({ game, onClose, onSave }) => {
                             onChange={(e) => setFormData({ ...formData, category_name: e.target.value })}
                             className="w-full p-2 border rounded"
                         >
-                            <option value="">Select Category</option>
+                            <option value="">Sélectionnez une catégorie</option>
                             {categories.map((category) => (
                                 <option key={category.id} value={category.name}>
                                     {category.name}
