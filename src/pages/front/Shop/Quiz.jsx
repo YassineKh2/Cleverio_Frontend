@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 // Function to decode HTML entities
 const decodeHtml = (html) => {
@@ -17,7 +18,8 @@ const Quiz = ({ userId }) => {
     const [userAnswers, setUserAnswers] = useState([]);
     const [score, setScore] = useState(0);
     const [quizFinished, setQuizFinished] = useState(false);
-    const [timer, setTimer] = useState(60); // Timer set for 2 minutes (120 seconds)
+    const [timer, setTimer] = useState(60); // Timer set for 1 minute (60 seconds)
+    const [quizStarted, setQuizStarted] = useState(false); // State to manage quiz start
 
     useEffect(() => {
         const fetchQuizQuestions = async () => {
@@ -32,7 +34,7 @@ const Quiz = ({ userId }) => {
                 setQuestions(decodedQuestions);
             } catch (error) {
                 console.error("Failed to fetch questions:", error);
-                //toast.error("Failed to load quiz questions.");
+                toast.error("Failed to load quiz questions.");
             }
         };
 
@@ -41,15 +43,16 @@ const Quiz = ({ userId }) => {
 
     // Timer logic
     useEffect(() => {
-        if (timer > 0 && !quizFinished) {
-            const interval = setInterval(() => {
+        let interval = null;
+        if (quizStarted && timer > 0) {
+            interval = setInterval(() => {
                 setTimer((prev) => prev - 1);
             }, 1000);
-            return () => clearInterval(interval); // Cleanup on unmount
         } else if (timer === 0) {
             calculateFinalScore(); // Automatically finish the quiz when the timer runs out
         }
-    }, [timer, quizFinished]);
+        return () => clearInterval(interval); // Cleanup on unmount
+    }, [quizStarted, timer]);
 
     const handleAnswer = (answer) => {
         const isCorrect = answer === questions[currentQuestionIndex].correct_answer;
@@ -76,19 +79,34 @@ const Quiz = ({ userId }) => {
                     toast.error("Failed to add points.");
                 }
             } else {
-               // toast.info("You scored below 50%. Better luck next time!");
+                toast.info("You scored below 50%. Better luck next time!");
             }
         }
         setQuizFinished(true);
+        setQuizStarted(false); // Reset quiz started state
+    };
+
+    const startQuiz = () => {
+        setTimer(60); // Set timer to 1 minute (60 seconds)
+        setQuizStarted(true); // Start the quiz
     };
 
     return (
         <div className="flex flex-col items-center justify-center p-10 bg-gray-100 rounded-lg shadow-lg transition duration-300 ease-in-out">
             <h2 className="text-4xl font-bold text-black mb-2">Quiz Time!</h2>
-            <p className="text-lg text-gray-700 mb-1">Obtenez plus de 3/5 pour obtenir +2 points gratuitement</p>
-            <p className="text-lg text-red-600 mb-4">Temps restant: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</p>
-        
-            {quizFinished ? (
+            <p className="text-lg text-gray-700 mb-1">Obtenez plus de 3/5 pour obtenir +2 points gratuitement.</p>
+            <p className="text-lg text-red-600 mb-4 font-bold">Attention: Le quiz doit finir dans une minute!</p>
+            {quizStarted && (
+                <p className="text-lg text-red-600 mb-4">Temps restant: {Math.floor(timer / 60)}:{(timer % 60).toString().padStart(2, '0')}</p>
+            )}
+            {!quizStarted ? (
+                <button
+                    onClick={startQuiz}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition duration-200 ease-in-out mb-4"
+                >
+                    Démarrer le Quiz
+                </button>
+            ) : quizFinished ? (
                 <div className="text-center">
                     <h3 className="text-3xl font-medium text-black mb-4">Your Score: {score}/{questions.length}</h3>
                     <button onClick={() => window.location.reload()} className="bg-white text-gray-800 px-8 py-3 rounded-lg shadow-lg hover:bg-gray-200 transition duration-200 ease-in-out">
