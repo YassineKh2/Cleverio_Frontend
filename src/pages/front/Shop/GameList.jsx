@@ -137,7 +137,7 @@ const GameList = ({ selectedCategory }) => {
                                 onClick={() => buyGame(game.id, game.points)}
                                 className="bg-black-500 text-white px-4 py-2 rounded w-full"
                             >
-                               Achetez pour {game.points} points
+                               {game.points} points
                             </button>
                             <button
                                 onClick={() => navigateToAmazon(game.name)}
