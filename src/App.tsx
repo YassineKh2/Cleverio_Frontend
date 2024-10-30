@@ -1,4 +1,5 @@
-import RoutesFront from "./RoutesFront.tsx";
+// @ts-ignore
+import RoutesFront from "./RoutesFront.jsx";
 
 function App() {
   return (
