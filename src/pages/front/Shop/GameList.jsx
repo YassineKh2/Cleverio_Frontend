@@ -105,6 +105,7 @@ const GameList = ({ selectedCategory }) => {
     };
 
     return (
+        <>
         <div className="p-4 w-full h-full relative">
             <ToastContainer />
             <div className="absolute top-4 right-4 z-10">
@@ -140,7 +141,7 @@ const GameList = ({ selectedCategory }) => {
                             </button>
                             <button
                                 onClick={() => navigateToAmazon(game.name)}
-                                className="bg-green-500 text-white px-4 py-2 rounded w-full mt-2"
+                                className="bg-white-500 text-black px-4 py-2 rounded w-full mt-2"
                             >
                                 Voir sur Amazon
                             </button>
@@ -173,10 +174,12 @@ const GameList = ({ selectedCategory }) => {
                     </div>
                 </div>
             )}
-              <Quiz userId={userId} />
+         
 
         </div>
-    );
+        
+        {/* <Quiz userId={userId} /> */}
+        </> );
 };
 
 export default GameList;

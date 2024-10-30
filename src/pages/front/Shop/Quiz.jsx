@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
 // Function to decode HTML entities
@@ -12,7 +11,7 @@ const decodeHtml = (html) => {
 
 const BASE_URL = "http://127.0.0.1:8000";
 
-const Quiz = ({ userId }) => { // Accept userId as a prop
+const Quiz = ({ userId }) => {
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -23,8 +22,7 @@ const Quiz = ({ userId }) => { // Accept userId as a prop
         const fetchQuizQuestions = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/api/game/quiz`);
-                // Decode HTML entities in the questions
-                const decodedQuestions = response.data.map(question => ({
+                const decodedQuestions = response.data.map((question) => ({
                     ...question,
                     question: decodeHtml(question.question),
                     correct_answer: decodeHtml(question.correct_answer),
@@ -54,7 +52,6 @@ const Quiz = ({ userId }) => { // Accept userId as a prop
         if (totalQuestions > 0) {
             const percentage = (score / totalQuestions) * 100;
             if (percentage > 50) {
-                // Award points to the user for scoring more than 50%
                 const pointsToAdd = 2;
                 try {
                     await axios.patch(`${BASE_URL}/api/game/addpoints/${userId}`, {
@@ -73,31 +70,53 @@ const Quiz = ({ userId }) => { // Accept userId as a prop
     };
 
     return (
-        <div className="p-4">
-            <h2 className="text-lg font-semibold mb-4">Quiz</h2>
+        <div className="flex flex-col items-center justify-center p-10 bg-gray-100 rounded-lg shadow-lg transition duration-300 ease-in-out">
+            <h2 className="text-4xl font-bold text-black mb-2">Quiz Time!</h2>
+            <p className="text-lg text-gray-700 mb-1">Obtenez plus de 3/5 pour obtenir +2 points gratuitement</p>
+        
             {quizFinished ? (
-                <div>
-                    <h3>Your Score: {score}/{questions.length}</h3>
-                    <button onClick={() => window.location.reload()} className="bg-blue-500 text-white px-4 py-2 rounded">Retry Quiz</button>
+                <div className="text-center">
+                    <h3 className="text-3xl font-medium text-black mb-4">Your Score: {score}/{questions.length}</h3>
+                    <button onClick={() => window.location.reload()} className="bg-white text-gray-800 px-8 py-3 rounded-lg shadow-lg hover:bg-gray-200 transition duration-200 ease-in-out">
+                        Retry Quiz
+                    </button>
                 </div>
             ) : (
-                <div>
+                <div className="w-full max-w-md">
                     {questions.length > 0 && currentQuestionIndex < questions.length ? (
-                        <div>
-                            <h3 className="mb-2">{`Question ${currentQuestionIndex + 1}: ${questions[currentQuestionIndex].question}`}</h3>
+                        <div className="bg-white p-6 rounded-lg shadow-md border border-gray-300 transition duration-300 ease-in-out hover:shadow-xl">
+                            <h3 className="mb-4 text-xl font-medium text-black">{`Question ${currentQuestionIndex + 1}:`}</h3>
+                            <p className="text-gray-800 mb-4">{questions[currentQuestionIndex].question}</p>
                             <ul>
                                 {questions[currentQuestionIndex].incorrect_answers.map((option, index) => (
                                     <li key={index}>
-                                        <button onClick={() => handleAnswer(option)} className="bg-gray-300 text-black px-4 py-2 rounded m-1">{option}</button>
+                                        <button
+                                            onClick={() => handleAnswer(option)}
+                                            className="bg-gray-300 text-black px-4 py-2 rounded m-1 hover:bg-gray-400 transition duration-150 ease-in-out"
+                                        >
+                                            {option}
+                                        </button>
                                     </li>
                                 ))}
                                 <li>
-                                    <button onClick={() => handleAnswer(questions[currentQuestionIndex].correct_answer)} className="bg-gray-300 text-black px-4 py-2 rounded m-1">{questions[currentQuestionIndex].correct_answer}</button>
+                                    <button
+                                        onClick={() => handleAnswer(questions[currentQuestionIndex].correct_answer)}
+                                        className="bg-gray-300 text-black px-4 py-2 rounded m-1 hover:bg-gray-400 transition duration-150 ease-in-out"
+                                    >
+                                        {questions[currentQuestionIndex].correct_answer}
+                                    </button>
                                 </li>
                             </ul>
                         </div>
                     ) : (
-                        <button onClick={calculateFinalScore} className="bg-green-500 text-white px-4 py-2 rounded">Finish Quiz</button>
+                        <div className="text-center">
+                            <button
+                                onClick={calculateFinalScore}
+                                className="bg-green-600 text-white px-8 py-3 rounded-lg shadow-lg hover:bg-green-700 transition duration-200 ease-in-out"
+                            >
+                                Finish Quiz
+                            </button>
+                        </div>
                     )}
                 </div>
             )}
