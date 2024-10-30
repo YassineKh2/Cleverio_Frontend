@@ -66,26 +66,26 @@ const GameList = () => {
                         <ToastContainer />
 
                         <Card
-                            title="Games Collection"
+                            title="Collection de jeux"
                             headerslot={
                                 <Button
-                                    text="Add Game"
+                                    text="Ajouter un jeu"
                                     onClick={() => setShowAddModal(true)}
                                     className="bg-black-600 text-white"
                                 />
                             }
                         >
                             {loading ? (
-                                <p>Loading...</p>
+                                <p>Chargement...</p>
                             ) : (
                                 <table className="min-w-full bg-white dark:bg-slate-800 rounded-lg shadow-md">
                                     <thead>
                                         <tr>
-                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Image</th>
-                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Name</th>
+                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Photo</th>
+                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Nom</th>
                                             <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Points</th>
-                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Category</th>
-                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Stock Quantity</th>
+                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Categorie</th>
+                                            <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-slate-900 dark:text-white">Stockage</th>
                                             <th className="px-6 py-3 border-b-2 border-gray-300 text-center leading-4 text-slate-900 dark:text-white">Actions</th>
                                         </tr>
                                     </thead>
@@ -109,12 +109,12 @@ const GameList = () => {
                                                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300">{game.stock_quantity}</td>
                                                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-300 text-center">
                                                     <Button
-                                                        text="Edit"
+                                                        text="Modifier"
                                                         onClick={() => handleEdit(game)}
                                                         className="bg-black-500 text-white px-2 py-1 mr-2"
                                                     />
                                                     <Button
-                                                        text="Delete"
+                                                        text="Supprmier"
                                                         onClick={() => handleDelete(game.id)}
                                                         className="bg-black-900 text-white px-2 py-1"
                                                     />
