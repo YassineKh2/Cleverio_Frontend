@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import UserPoints from "./UserPoints";
 import "react-toastify/dist/ReactToastify.css";
 import PurchaseHistory from "./PurchaseHistory";
-
+import Quiz from './Quiz';
 const BASE_URL = "http://127.0.0.1:8000";
 
 const GameList = ({ selectedCategory }) => {
@@ -105,11 +105,13 @@ const GameList = ({ selectedCategory }) => {
     };
 
     return (
+        <>
         <div className="p-4 w-full h-full relative">
             <ToastContainer />
             <div className="absolute top-4 right-4 z-10">
                 <UserPoints refreshTrigger={userPoints} />
             </div>
+          
             <button
                 onClick={() => setShowPurchaseHistory(true)}
                 className="bg-gray-700 text-white px-4 py-2 rounded mb-4"
@@ -139,7 +141,7 @@ const GameList = ({ selectedCategory }) => {
                             </button>
                             <button
                                 onClick={() => navigateToAmazon(game.name)}
-                                className="bg-green-500 text-white px-4 py-2 rounded w-full mt-2"
+                                className="bg-white-500 text-black px-4 py-2 rounded w-full mt-2"
                             >
                                 Voir sur Amazon
                             </button>
@@ -172,8 +174,12 @@ const GameList = ({ selectedCategory }) => {
                     </div>
                 </div>
             )}
+         
+
         </div>
-    );
+        
+        {/* <Quiz userId={userId} /> */}
+        </> );
 };
 
 export default GameList;
