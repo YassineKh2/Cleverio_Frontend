@@ -15,6 +15,10 @@ const schema = yup.object({
     .min(8, "Le mot de passe doit comporter au moins 8 caractères")
     .max(20, "Le mot de passe ne doit pas dépasser 20 caractères")
     .required("Mot de passe requis"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Les mots de passe doivent correspondre")
+    .required("Confirmation du mot de passe requise"),
   first_name: yup.string().required("Prénom requis"),
   last_name: yup.string().required("Nom de famille requis"),
   email: yup.string().email("Email invalide").required("Email requis"),
@@ -73,6 +77,42 @@ const RegForm = () => {
           error={errors.username}
         />
         <Textinput
+          name="first_name"
+          label="Prénom"
+          type="text"
+          placeholder="Entrez votre prénom"
+          register={register}
+          error={errors.first_name}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <Textinput
+          name="last_name"
+          label="Nom de famille"
+          type="text"
+          placeholder="Entrez votre nom de famille"
+          register={register}
+          error={errors.last_name}
+        />
+        <Textinput
+          name="email"
+          label="Email"
+          type="email"
+          placeholder="Entrez votre email"
+          register={register}
+          error={errors.email}
+        />
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <Textinput
+          name="date_of_birth"
+          label="Date de naissance"
+          type="date" 
+          placeholder="YYYY-MM-DD"
+          register={register}
+          error={errors.date_of_birth}
+        />
+        <Textinput
           name="password"
           label="Mot de passe"
           type="password"
@@ -83,38 +123,12 @@ const RegForm = () => {
       </div>
       <div className="grid grid-cols-2 gap-4">
         <Textinput
-          name="first_name"
-          label="Prénom"
-          type="text"
-          placeholder="Entrez votre prénom"
+          name="confirmPassword"
+          label="Confirmer le mot de passe"
+          type="password"
+          placeholder="Confirmez votre mot de passe"
           register={register}
-          error={errors.first_name}
-        />
-        <Textinput
-          name="last_name"
-          label="Nom de famille"
-          type="text"
-          placeholder="Entrez votre nom de famille"
-          register={register}
-          error={errors.last_name}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <Textinput
-          name="email"
-          label="Email"
-          type="email"
-          placeholder="Entrez votre email"
-          register={register}
-          error={errors.email}
-        />
-        <Textinput
-          name="date_of_birth"
-          label="Date de naissance"
-          type="date" 
-          placeholder="YYYY-MM-DD"
-          register={register}
-          error={errors.date_of_birth}
+          error={errors.confirmPassword}
         />
       </div>
       <Checkbox
