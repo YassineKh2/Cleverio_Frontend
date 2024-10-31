@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import api from "./api";
 
 export const AddRoom = async (formData) => {
@@ -39,7 +40,15 @@ export const deleteRoom = async (id) => {
 };
 export const displayRooms = async () => {
   try {
-    const response = await api.get("roomApi/rooms/");
+    const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token); 
+    const userId = decoded.user_id;
+    const response = await api.get("roomApi/rooms/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-User-Id": userId,
+      },
+    });
 
     return response.data;
   } catch (error) {
@@ -51,10 +60,9 @@ export const displayRooms = async () => {
 export const getRecommandedRooms = async () => {
   try {
     const token = localStorage.getItem("token");
+    const decoded = jwtDecode(token);
     const response = await api.get("roomApi/recommendations", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      userId: decoded.user_id,
     });
     return response.data;
   } catch (error) {

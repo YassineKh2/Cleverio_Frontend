@@ -12,12 +12,13 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 function DisplayRooms() {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null); // Initialize user as null
   const [recommandedRooms, setRecommandedRooms] = useState([]);
 
   const getAllRooms = async () => {
     const response = await displayRooms();
     setRooms(response.rooms);
+    console.log(response);
     setRecommandedRooms(response.recommended_rooms);
   };
 
@@ -25,9 +26,13 @@ function DisplayRooms() {
     getAllRooms();
     const token = localStorage.getItem("token");
     if (token) {
-      setUser(jwtDecode(token));
+      const decodedUser = jwtDecode(token);
+      setUser(decodedUser);
+      console.log("Decoded User:", decodedUser); // Debugging line
     }
   }, []);
+
+  useEffect(() => console.log(user), [user]);
 
   const handleDelete = async (id) => {
     await deleteRoom(id);
@@ -63,35 +68,39 @@ function DisplayRooms() {
         {recommandedRooms.length > 0 && (
           <div>
             <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ml-10 mr-10">
-              {recommandedRooms.map((room) => (
-                <div
-                  key={room.id}
-                  className="max-w-sm rounded overflow-hidden shadow-lg border border-gray-200 relative" // Added relative positioning
-                >
-                  <span className="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
-                    Recommandé pour vous
-                  </span>
-                  <img
-                    className="w-full h-48 object-cover"
-                    src={room.image}
-                    alt={room.name}
-                  />
-                  <div className="px-6 py-4">
-                    <div className="font-bold text-xl mb-2">{room.name}</div>
-                    <p className="text-gray-700 text-base">
-                      {room.description}
-                    </p>
-                  </div>
-                  <div className="px-6 py-4">
-                    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-                      Status: {room.status}
+              {recommandedRooms
+                .filter((room) =>
+                  user ? room.createdBy !== user.user_id : true
+                ) // Exclude rooms created by the user
+                .map((room) => (
+                  <div
+                    key={room.id}
+                    className="max-w-sm rounded overflow-hidden shadow-lg border border-gray-200 relative" // Added relative positioning
+                  >
+                    <span className="absolute top-0 right-0 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
+                      Recommandé pour vous
                     </span>
-                    <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                      Participants: {room.max_participants}
-                    </span>
+                    <img
+                      className="w-full h-48 object-cover"
+                      src={room.image}
+                      alt={room.name}
+                    />
+                    <div className="px-6 py-4">
+                      <div className="font-bold text-xl mb-2">{room.name}</div>
+                      <p className="text-gray-700 text-base">
+                        {room.description}
+                      </p>
+                    </div>
+                    <div className="px-6 py-4">
+                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+                        Status: {room.status}
+                      </span>
+                      <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+                        Participants: {room.max_participants}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         )}
@@ -99,7 +108,13 @@ function DisplayRooms() {
         {/* Room Cards Section */}
         <div className="mb-64 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 ml-10 mr-10">
           {rooms
-            .filter((room) => !recommandedRooms.some((r) => r.id === room.id)) // Exclude recommended rooms
+            .filter(
+              (room) =>
+                !recommandedRooms.some((r) => r.id === room.id) && // Exclude recommended rooms
+                user
+                  ? room.createdBy !== user.user_id
+                  : true // Exclude rooms created by the user if user is defined
+            )
             .map((room) => (
               <div
                 key={room.id}
@@ -113,24 +128,25 @@ function DisplayRooms() {
                 <div className="px-6 py-4">
                   <div className="flex justify-between items-center">
                     <div className="font-bold text-xl mb-2">{room.name}</div>
-                    {user && room.createdBy === user.user_id && (
-                      <div className="flex items-center">
-                        <button
-                          onClick={() =>
-                            navigate(`/front/updateroom`, { state: { room } })
-                          }
-                          className="ml-2 text-black-500 hover:text-blue-800"
-                        >
-                          <FaEdit />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(room.id)}
-                          className="ml-2 text-black-500 hover:text-blue-800"
-                        >
-                          <MdOutlineDeleteOutline size={22} />
-                        </button>
-                      </div>
-                    )}
+                    {user &&
+                      user.user_id === room.createdBy && ( // Check if user is defined and matches createdBy
+                        <div className="flex items-center">
+                          <button
+                            onClick={() =>
+                              navigate(`/front/updateroom`, { state: { room } })
+                            }
+                            className="ml-2 text-black-500 hover:text-blue-800"
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(room.id)}
+                            className="ml-2 text-black-500 hover:text-blue-800"
+                          >
+                            <MdOutlineDeleteOutline size={22} />
+                          </button>
+                        </div>
+                      )}
                   </div>
                   <p className="text-gray-700 text-base">{room.description}</p>
                 </div>
