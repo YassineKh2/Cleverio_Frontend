@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import useDarkMode from "@/hooks/useDarkMode";
 import LogoWhite from "@/assets/images/logo/logo-white.svg";
@@ -7,11 +7,11 @@ import Textinput from "@/components/ui/Textinput";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { AddRoom } from "../../../Services/RoomsService";
+import { AddRoom, updateRoom } from "../../../Services/RoomsService";
 import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 
-function AddRooms() {
+function UpdateRoom() {
   const schema = yup
     .object({
       name: yup.string().required("Name is Required"),
@@ -27,17 +27,41 @@ function AddRooms() {
     })
     .required();
 
+  const location = useLocation();
+  const { room } = location.state;
+
+  // Use the room data as default values
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset, // Destructure reset
   } = useForm({
     resolver: yupResolver(schema),
     mode: "all",
+    defaultValues: {
+      name: room.name,
+      subject: room.subject,
+      max_participants: room.max_participants,
+      status: room.status,
+      is_private: room.is_private,
+      description: room.description,
+    },
   });
 
-  const [isDark] = useDarkMode();
+  useEffect(() => {
+    // Reset the form with room data if it changes
+    reset({
+      name: room.name,
+      subject: room.subject,
+      max_participants: room.max_participants,
+      status: room.status,
+      is_private: room.is_private,
+      description: room.description,
+    });
+  }, [room, reset]);
 
+  const [isDark] = useDarkMode();
   const StatusInput = ({ register }) => {
     return (
       <select {...register("status")} className="w-full border rounded-md p-2">
@@ -61,21 +85,20 @@ function AddRooms() {
       </select>
     );
   };
+
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      const token = localStorage.getItem("token");
-      const decoded = jwtDecode(token);
       for (const key in data) {
         formData.append(key, data[key]);
       }
-      formData.append("createdBy", decoded.user_id);
+      formData.append("createdBy", room.createdBy);
       if (data.image && data.image.length > 0) {
         formData.append("image", data.image[0]);
       }
 
-      await AddRoom(formData);
+      await updateRoom(room.id, formData);
       navigate("/front/displayrooms");
     } catch (error) {
       console.log(error);
@@ -202,7 +225,7 @@ function AddRooms() {
               type="submit"
               className="btn btn-dark block w-full text-center"
             >
-              Crée Une Salle
+              Update Une Salle
             </button>
           </form>
 
@@ -221,4 +244,4 @@ function AddRooms() {
   );
 }
 
-export default AddRooms;
+export default UpdateRoom;

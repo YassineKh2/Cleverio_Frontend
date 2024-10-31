@@ -9,6 +9,8 @@ const Home = lazy(() => import("./pages/front/Home/Home.tsx"));
 const Events = lazy(() => import("./pages/front/Events/Events.tsx"));
 const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
 const AddRoom = lazy(() => import("./pages/front/Rooms/AddRooms.jsx"));
+const DisplayRooms = lazy(() => import("./pages/front/Rooms/DisplayRooms.jsx"));
+const UpdateRoom = lazy(() => import("./pages/front/Rooms/UpdateRoom.jsx"));
 
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
@@ -82,6 +84,22 @@ function RoutesFront() {
                     element={
                         <Suspense fallback={<Loading />}>
                             <AddRoom />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/displayrooms"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <DisplayRooms />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/updateroom"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <UpdateRoom />
                         </Suspense>
                     }
                 />
