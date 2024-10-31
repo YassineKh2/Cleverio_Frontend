@@ -8,7 +8,13 @@ const Error = lazy(() => import("./pages/404"));
 const Home = lazy(() => import("./pages/front/Home/Home.tsx"));
 const Events = lazy(() => import("./pages/front/Events/Events.tsx"));
 const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
+const AddRoom = lazy(() => import("./pages/front/Rooms/AddRooms.jsx"));
+const DisplayRooms = lazy(() => import("./pages/front/Rooms/DisplayRooms.jsx"));
+const UpdateRoom = lazy(() => import("./pages/front/Rooms/UpdateRoom.jsx"));
 
+const Shop = lazy(() => import("./pages/front/Shop/Shop"));
+import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
 import NavbarFront from "@/components/NavbarFront";
@@ -16,6 +22,9 @@ import UserDisplay from "@/pages/app/users/displayUsers.jsx";
 import UserProfile from "@/pages/app/users/displayProfile.jsx";
 import UserProfileFront from "@/pages/app/users/displayProfileFront.jsx";
 import FaceAuth from "@/pages/app/users/faceAuth.jsx";
+import GameList from "./pages/app/shop/GameList";
+import QuizList from "@/pages/app/quiz/QuizList.jsx";
+import AddQuiz from "@/pages/app/quiz/AddQuiz.jsx";
 
 
 
@@ -57,9 +66,18 @@ function RoutesFront() {
                     element={
                         <Suspense fallback={<Loading />}>
                            <UserProfileFront/>
+                           </Suspense>
+                    }
+                    />
+                    <Route
+                    path="/front/shop"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <Shop />
                         </Suspense>
                     }
-                />
+                    />
+                    
 
 
 <Route
@@ -93,9 +111,19 @@ function RoutesFront() {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="dashboard/users" element={<UserDisplay/>}/>
                     <Route path="dashboard/profile" element={<UserProfile/>}/>
-
+                    <Route path="dashboard/shop" element={<GameList />} />
+                    <Route path="dashboard/quiz" element={<QuizList />} />
+                    <Route path="dashboard/quiz/add" element={<AddQuiz />} />
                     <Route path="*" element={<Navigate to="/404" />} />
                 </Route>
+                {/* <Route
+                    path="/shop"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <GameList />
+                        </Suspense>
+                    }
+                /> */}
                 <Route
                     path="/404"
                     element={
@@ -104,7 +132,32 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+                <Route
+                    path="/front/addRoom"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <AddRoom />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/displayrooms"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <DisplayRooms />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/updateroom"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <UpdateRoom />
+                        </Suspense>
+                    }
+                />
             </Routes>
+            <ToastContainer />
         </main>
     );
 }
