@@ -5,7 +5,8 @@ import Icon from "@/components/ui/Icon";
 import Button from "@/components/ui/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import {addQuiz} from "@/Services/quizApi.js";
-import {redirect} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+
 const AddQuiz = () => {
     const { register, control, handleSubmit, reset, trigger, setError } = useForm(
 
@@ -15,10 +16,10 @@ const AddQuiz = () => {
         name: "test",
     });
 
-
+    const navigate = useNavigate();
     function submit(data) {
         addQuiz(data).then(()=>{
-            redirect("/app/quiz");
+            navigate("/dashboard/quiz");
         })
     }
 
