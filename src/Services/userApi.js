@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const API_URL = "http://127.0.0.1:8000/api/login";
 
@@ -8,6 +8,7 @@ export const loginUser = async (username, password) => {
       username,
       password,
     });
+    console.log(response.data);
     return response.data.token;
   } catch (error) {
     console.error("Login error:", error);
@@ -17,15 +18,17 @@ export const loginUser = async (username, password) => {
 
 // Function to log out the user
 export const logoutUser = () => {
-    localStorage.removeItem('token');
+  localStorage.removeItem("token");
 };
 
-
 export const registerUser = async (userData) => {
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register", userData);
-      return response.data;
-    } catch (error) {
-      throw new Error(error.response?.data?.error || "Registration failed.");
-    }
-  };
+  try {
+    const response = await axios.post(
+      "http://127.0.0.1:8000/api/register",
+      userData
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.error || "Registration failed.");
+  }
+};

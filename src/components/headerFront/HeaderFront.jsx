@@ -16,7 +16,7 @@ import Language from "./Tools/Language";
 import useRtl from "@/hooks/useRtl";
 import useMobileMenu from "@/hooks/useMobileMenu";
 import MonoChrome from "./Tools/MonoChrome";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const HeaderFront = ({ className = "custom-class" }) => {
   const [collapsed, setMenuCollapsed] = useSidebar();
@@ -118,31 +118,44 @@ const HeaderFront = ({ className = "custom-class" }) => {
           ) : null}
           <ul className="navbar-list flex gap-5">
             <li className="navbar-item">
-              <Link to="/front" className="navbar-link">Home</Link>
+              <Link to="/front" className="navbar-link">
+                Home
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/front/events" className="navbar-link">Events</Link>
+              <Link to="/front/events" className="navbar-link">
+                Events
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/front/courses" className="navbar-link">Courses</Link>
+              <Link to="/front/courses" className="navbar-link">
+                Courses
+              </Link>
             </li>
             <li className="navbar-item">
-              <Link to="/front/shop" className="navbar-link">Shop</Link>
+              <Link to="/front/shop" className="navbar-link">
+                Shop
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/front/displayrooms" className="navbar-link">
+                Rooms
+              </Link>
             </li>
           </ul>
           {/* Nav Tools  */}
           <div className="nav-tools flex items-center lg:space-x-6 space-x-3 rtl:space-x-reverse">
-            <SwitchDark/>
-            {width >= breakpoints.md && <Message/>}
-            {width >= breakpoints.md && <Notification/>}
-            {width >= breakpoints.md && <Profile/>}
+            <SwitchDark />
+            {width >= breakpoints.md && <Message />}
+            {width >= breakpoints.md && <Notification />}
+            {width >= breakpoints.md && <Profile />}
             {width <= breakpoints.md && (
-                <div
-                    className="cursor-pointer text-slate-900 dark:text-white text-2xl"
-                    onClick={handleOpenMobileMenu}
-                >
-                  <Icon icon="heroicons-outline:menu-alt-3"/>
-                </div>
+              <div
+                className="cursor-pointer text-slate-900 dark:text-white text-2xl"
+                onClick={handleOpenMobileMenu}
+              >
+                <Icon icon="heroicons-outline:menu-alt-3" />
+              </div>
             )}
           </div>
         </div>
