@@ -17,7 +17,7 @@ export async function getQuizs() {
 
 export async function addQuiz(quizData) {
     try {
-        const response = await axios.post(`${apiURL}/addQuiz`, quizData);
+        const response = await axios.post(`${apiURL}`, quizData);
         return response.data;
     } catch (error) {
         console.error(error);
@@ -38,7 +38,7 @@ export async function getTournamentQuizes(id) {
 export async function updateQuiz(quizData) {
     try {
         const response = await axios.put(
-            `${apiURL}`,
+            `${apiURL}/${quizData.id}`,
             quizData
         );
         return response.data;

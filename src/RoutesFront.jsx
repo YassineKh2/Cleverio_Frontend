@@ -17,6 +17,8 @@ import NavbarFront from "@/components/headerFront/HeaderFront";
 import GameList from "./pages/app/shop/GameList";
 import QuizList from "@/pages/app/quiz/QuizList.jsx";
 import AddQuiz from "@/pages/app/quiz/AddQuiz.jsx";
+import QuizFront from "@/pages/app/quiz/QuizFront.jsx";
+import DoQuiz from "@/pages/app/quiz/DoQuiz.jsx";
 
 function RoutesFront() {
     const location = useLocation();
@@ -56,6 +58,22 @@ function RoutesFront() {
                     element={
                         <Suspense fallback={<Loading />}>
                             <Shop />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/quiz"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <QuizFront />
+                        </Suspense>
+                    }
+                />
+                <Route
+                    path="/front/quiz/:id"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <DoQuiz />
                         </Suspense>
                     }
                 />

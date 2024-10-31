@@ -18,6 +18,9 @@ function NavbarFront() {
                 <li className="navbar-item">
                     <Link to="/front/shop" className="navbar-link">Shop</Link>
                 </li>
+                <li className="navbar-item">
+                    <Link to="/front/quiz" className="navbar-link">Quiz</Link>
+                </li>
             </ul>
             <Link to="/logout" className="logout-button">Logout</Link>
         </nav>
