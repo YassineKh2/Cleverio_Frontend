@@ -3,8 +3,8 @@
 function Home() {
     return (
         <>
-    
-        <div>
+
+        <div className="text-center mt-4">
             <h1>Home</h1>
             <p>Information about the platform.</p>
         </div>

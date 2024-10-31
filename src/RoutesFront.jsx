@@ -12,9 +12,15 @@ const AddRoom = lazy(() => import("./pages/front/Rooms/AddRooms.jsx"));
 const DisplayRooms = lazy(() => import("./pages/front/Rooms/DisplayRooms.jsx"));
 const UpdateRoom = lazy(() => import("./pages/front/Rooms/UpdateRoom.jsx"));
 
+const Shop = lazy(() => import("./pages/front/Shop/Shop"));
+import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
-import NavbarFront from "@/components/NavbarFront";
+import NavbarFront from "@/components/headerFront/HeaderFront";
+import GameList from "./pages/app/shop/GameList";
+import QuizList from "@/pages/app/quiz/QuizList.jsx";
+import AddQuiz from "@/pages/app/quiz/AddQuiz.jsx";
 
 function RoutesFront() {
     const location = useLocation();
@@ -49,6 +55,15 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+                 <Route
+                    path="/front/shop"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <Shop />
+                        </Suspense>
+                    }
+                />
+
                 {/* Other routes */}
                 <Route
                     path="/"
@@ -67,10 +82,22 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+
                 <Route path="/*" element={<Layout />}>
                     <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="dashboard/shop" element={<GameList />} />
+                    <Route path="dashboard/quiz" element={<QuizList />} />
+                    <Route path="dashboard/quiz/add" element={<AddQuiz />} />
                     <Route path="*" element={<Navigate to="/404" />} />
                 </Route>
+                {/* <Route
+                    path="/shop"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                            <GameList />
+                        </Suspense>
+                    }
+                /> */}
                 <Route
                     path="/404"
                     element={
@@ -104,6 +131,7 @@ function RoutesFront() {
                     }
                 />
             </Routes>
+            <ToastContainer />
         </main>
     );
 }

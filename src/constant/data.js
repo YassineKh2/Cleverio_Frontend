@@ -57,6 +57,12 @@ export const menuItems = [
     icon: "heroicons-outline:mail",
     link: "email",
   },
+  {
+    title: "Quiz",
+    isHide: true,
+    icon: "heroicons-outline:puzzle-piece",
+    link: "dashboard/quiz",
+  },
 
   {
     title: "Kanban",
@@ -69,6 +75,12 @@ export const menuItems = [
     isHide: true,
     icon: "heroicons-outline:calendar",
     link: "calender",
+  },
+  {
+    title: "Shop",
+    isHide: true,
+    icon: "heroicons-outline:clipboard-check",
+    link: "dashboard/shop",
   },
 
   {

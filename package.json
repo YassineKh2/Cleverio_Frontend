@@ -30,6 +30,7 @@
     "cleave.js": "^1.6.0",
     "d3-array": "^3.2.2",
     "dayjs": "^1.11.7",
+    "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.3",
     "localforage": "^1.10.0",
