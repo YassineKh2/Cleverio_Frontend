@@ -111,7 +111,7 @@ function RoutesFront() {
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="dashboard/users" element={<UserDisplay/>}/>
                     <Route path="dashboard/profile" element={<UserProfile/>}/>
-                    <Route path="dashboard/shop" element={<GameList />} />
+ <Route path="dashboard/shop" element={<GameList />} />
                     <Route path="dashboard/quiz" element={<QuizList />} />
                     <Route path="dashboard/quiz/add" element={<AddQuiz />} />
                     <Route path="*" element={<Navigate to="/404" />} />
