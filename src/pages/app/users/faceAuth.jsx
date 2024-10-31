@@ -1,91 +1,97 @@
-import React, { useRef, useState } from "react";
-import Webcam from "react-webcam";
-import axiosInstance from "./axiosConfig"; // Import axios instance configured for your API
+import React, { useRef, useState, useCallback } from 'react';
+import Webcam from 'react-webcam';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './FaceAuth.css'; // Import CSS for additional styling
+
+// Helper function to parse JWT token
+const parseJwt = (token) => {
+    try {
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+        console.error("Error decoding token:", e);
+        return null;
+    }
+};
 
 const FaceAuth = () => {
     const webcamRef = useRef(null);
-    const [capturedImage, setCapturedImage] = useState(null);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
-    // Capture the photo
-    const capture = () => {
-        const imageSrc = webcamRef.current.getScreenshot();
-        if (imageSrc) {
-            setCapturedImage(imageSrc);
-            setErrorMessage("");
-            setSuccessMessage("Image captured successfully.");
-            console.log("Image captured:", imageSrc);
-        } else {
-            setErrorMessage("Could not capture photo. Please try again.");
-            setSuccessMessage("");
-        }
+    // Define the options for the captured image
+    const videoConstraints = {
+        width: 640,
+        height: 480,
+        facingMode: "user"
     };
 
-    // Send the photo to the server for authentication
-    const authenticate = async () => {
-        if (!capturedImage) {
-            setErrorMessage("No image captured. Please capture an image first.");
-            setSuccessMessage("");
+    // Capture the image and send it to the backend
+    const captureAndAuthenticate = useCallback(async () => {
+        const imageSrc = webcamRef.current.getScreenshot();
+        
+        if (!imageSrc) {
+            setMessage("Failed to capture image.");
             return;
         }
 
+        // Convert the base64 image to a Blob to send as FormData
+        const blob = await fetch(imageSrc).then(res => res.blob());
+        const formData = new FormData();
+        formData.append('photo', blob, 'capture.jpg'); // Assign a name to the file
+
         try {
-            const blob = await fetch(capturedImage).then(res => res.blob());
-            const formData = new FormData();
-            formData.append("photo", blob, "photo.jpg");
-
-            console.log("Sending image as file for authentication...");
-
-            // Use axiosInstance for the POST request
-            const response = await axiosInstance.post(
-                "/face-auth",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                }
-            );
+            const response = await axios.post('http://127.0.0.1:8000/api/face-auth', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials: false,
+            });
 
             if (response.data.success) {
+                // Store token in localStorage
                 const token = response.data.token;
-                localStorage.setItem("token", token);
-                setSuccessMessage("Authentication successful. Token saved.");
+                localStorage.setItem('token', token);
+
+                // Decode the token to get the role
+                const decodedToken = parseJwt(token);
+                const role = decodedToken?.role;
+
+                // Redirect based on role
+                if (role === 'student') {
+                    navigate('/front');
+                } else if (role === 'admin') {
+                    navigate('/dashboard');
+                } else {
+                    setMessage("Unknown role.");
+                }
+
+                setMessage(`Authentication successful! Welcome, ${response.data.username}`);
             } else {
-                setErrorMessage(response.data.message || "No match found.");
+                setMessage('Authentication failed: No match found.');
             }
         } catch (error) {
-            setErrorMessage("An error occurred while authenticating. Please try again.");
+            setMessage('Error during authentication.');
             console.error("Authentication error:", error);
-            if (error.response && error.response.status === 401) {
-                console.error("Unauthorized access - check your server-side configurations.");
-            }
         }
-    };
+    }, [webcamRef, navigate]);
 
     return (
-        <div className="face-auth">
-            <h2>Face Authentication</h2>
-            <Webcam
-                audio={false}
-                ref={webcamRef}
-                screenshotFormat="image/jpeg"
-                width={320}
-                height={240}
-            />
-            <button onClick={capture}>Capture Photo</button>
-            <button onClick={authenticate} disabled={!capturedImage}>Authenticate</button>
-
-            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-            {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-
-            {capturedImage && (
-                <div>
-                    <h4>Captured Image Preview:</h4>
-                    <img src={capturedImage} alt="Captured" width={160} height={120} />
-                </div>
-            )}
+        <div className="face-auth-container">
+            <h2 className="face-auth-title">Facial Authentication</h2>
+            <div className="webcam-container">
+                <Webcam
+                    audio={false}
+                    ref={webcamRef}
+                    screenshotFormat="image/jpeg"
+                    width={videoConstraints.width}
+                    height={videoConstraints.height}
+                    videoConstraints={videoConstraints}
+                    className="webcam-view"
+                />
+            </div>
+            <button className="auth-button" onClick={captureAndAuthenticate}>Capture & Authenticate</button>
+            {message && <p className="auth-message">{message}</p>}
         </div>
     );
 };
