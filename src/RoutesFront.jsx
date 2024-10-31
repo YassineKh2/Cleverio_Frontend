@@ -17,10 +17,16 @@ import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
-import NavbarFront from "@/components/headerFront/HeaderFront";
+import NavbarFront from "@/components/NavbarFront";
+import UserDisplay from "@/pages/app/users/displayUsers.jsx";
+import UserProfile from "@/pages/app/users/displayProfile.jsx";
+import UserProfileFront from "@/pages/app/users/displayProfileFront.jsx";
+import FaceAuth from "@/pages/app/users/faceAuth.jsx";
 import GameList from "./pages/app/shop/GameList";
 import QuizList from "@/pages/app/quiz/QuizList.jsx";
 import AddQuiz from "@/pages/app/quiz/AddQuiz.jsx";
+
+
 
 function RoutesFront() {
     const location = useLocation();
@@ -56,14 +62,31 @@ function RoutesFront() {
                     }
                 />
                  <Route
+                    path="/front/profile"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                           <UserProfileFront/>
+                           </Suspense>
+                    }
+                    />
+                    <Route
                     path="/front/shop"
                     element={
                         <Suspense fallback={<Loading />}>
                             <Shop />
                         </Suspense>
                     }
-                />
+                    />
+                    
 
+
+<Route
+                    path="/faceAuth"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                           <FaceAuth/>
+                        </Suspense>
+                    }/>
                 {/* Other routes */}
                 <Route
                     path="/"
@@ -83,8 +106,11 @@ function RoutesFront() {
                     }
                 />
 
+
                 <Route path="/*" element={<Layout />}>
                     <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="dashboard/users" element={<UserDisplay/>}/>
+                    <Route path="dashboard/profile" element={<UserProfile/>}/>
                     <Route path="dashboard/shop" element={<GameList />} />
                     <Route path="dashboard/quiz" element={<QuizList />} />
                     <Route path="dashboard/quiz/add" element={<AddQuiz />} />

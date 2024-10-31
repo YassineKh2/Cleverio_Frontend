@@ -45,6 +45,13 @@ export const menuItems = [
   },
 
   {
+    title: "Utilisateurs",
+    isHide: false, // Adjust visibility if necessary
+    icon: "heroicons-outline:user-group", // Updated to a user-related icon
+    link: "/dashboard/users", // Updated link path
+  },
+  
+  {
     title: "Chat",
     isHide: true,
     icon: "heroicons-outline:chat",

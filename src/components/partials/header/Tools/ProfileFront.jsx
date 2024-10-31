@@ -43,7 +43,7 @@ const Profile = () => {
     {
       label: "Profil",
       icon: "heroicons-outline:user",
-      action: () => navigate("/dashboard/profile"),
+      action: () => navigate("/front/profile"),
     },
     {
       label: "Déconnexion",
