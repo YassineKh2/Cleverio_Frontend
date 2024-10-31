@@ -11,9 +11,9 @@ import useMobileMenu from "@/hooks/useMobileMenu";
 import Icon from "@/components/ui/Icon";
 
 // import images
-import MobileLogo from "@/assets/images/logo/logo-c.svg";
-import MobileLogoWhite from "@/assets/images/logo/logo-c-white.svg";
-import svgRabitImage from "@/assets/images/svg/rabit.svg";
+import MobileLogo from "@/assets/images/logo/logo.png";
+import MobileLogoWhite from "@/assets/images/logo/logo.png";
+import svgRabitImage from "@/assets/images/logo/logo.png";
 
 const MobileMenu = ({ className = "custom-class" }) => {
   const scrollableNodeRef = useRef();
@@ -49,9 +49,7 @@ const MobileMenu = ({ className = "custom-class" }) => {
               )}
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-                DashCode
-              </h1>
+              
             </div>
           </div>
         </Link>
