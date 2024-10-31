@@ -12,6 +12,12 @@ const Courses = lazy(() => import("./pages/front/Courses/Courses.tsx"));
 import Loading from "@/components/Loading.tsx";
 import Layout from "./layout/Layout";
 import NavbarFront from "@/components/NavbarFront";
+import UserDisplay from "@/pages/app/users/displayUsers.jsx";
+import UserProfile from "@/pages/app/users/displayProfile.jsx";
+import UserProfileFront from "@/pages/app/users/displayProfileFront.jsx";
+import FaceAuth from "@/pages/app/users/faceAuth.jsx";
+
+
 
 function RoutesFront() {
     const location = useLocation();
@@ -46,6 +52,23 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+                 <Route
+                    path="/front/profile"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                           <UserProfileFront/>
+                        </Suspense>
+                    }
+                />
+
+
+<Route
+                    path="/faceAuth"
+                    element={
+                        <Suspense fallback={<Loading />}>
+                           <FaceAuth/>
+                        </Suspense>
+                    }/>
                 {/* Other routes */}
                 <Route
                     path="/"
@@ -64,8 +87,13 @@ function RoutesFront() {
                         </Suspense>
                     }
                 />
+
+
                 <Route path="/*" element={<Layout />}>
                     <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="dashboard/users" element={<UserDisplay/>}/>
+                    <Route path="dashboard/profile" element={<UserProfile/>}/>
+
                     <Route path="*" element={<Navigate to="/404" />} />
                 </Route>
                 <Route

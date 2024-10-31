@@ -57,3 +57,14 @@
     background-color: #e03c3c; /* Darker shade of red on hover */
 }
 
+
+
+
+
+
+/* New style to push ProfileFront to the right */
+.profile-container {
+    right: 40px;
+    position: absolute;
+}
+

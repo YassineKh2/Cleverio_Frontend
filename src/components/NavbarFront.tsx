@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NavbarFront.css"; // Import the CSS file for styling
-
+import ProfileFront from "../components/partials/header/Tools/ProfileFront.jsx"
 function NavbarFront() {
     return (
         <nav className="navbar">
@@ -16,7 +16,9 @@ function NavbarFront() {
                     <Link to="/front/courses" className="navbar-link">Courses</Link>
                 </li>
             </ul>
-            <Link to="/logout" className="logout-button">Logout</Link>
+            <div className="profile-container">
+                <ProfileFront />
+            </div>
         </nav>
     );
 }
